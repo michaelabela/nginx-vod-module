@@ -825,11 +825,11 @@ m3u8_builder_closed_captions_get_size(
 	size_t result = 0;
 	size_t base =
 		sizeof("\n\n") - 1 +
-		(sizeof(M3U8_EXT_MEDIA_BASE) - 1 + VOD_INT32_LEN +
+		(sizeof(M3U8_EXT_MEDIA_BASE_CC) - 1 + VOD_INT32_LEN +
 		sizeof(M3U8_EXT_MEDIA_TYPE_CLOSED_CAPTIONS) - 1 +
-		sizeof(M3U8_EXT_MEDIA_GROUP_ID_CLOSED_CAPTIONS) - 1 +
 		sizeof(M3U8_EXT_MEDIA_LANG) - 1 +
 		LANG_ISO639_3_LEN +
+		sizeof(M3U8_EXT_MEDIA_NAME) -1 +
 		sizeof(M3U8_EXT_MEDIA_INSTREAM_ID) - 1 +
 		sizeof(M3U8_EXT_MEDIA_NON_DEFAULT) - 1 +
 		sizeof("\"\n") - 1);
