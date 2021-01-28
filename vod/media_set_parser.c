@@ -182,7 +182,7 @@ static json_object_key_def_t media_set_params[] = {
 	{ vod_string("clipFrom"),						VOD_JSON_INT,	MEDIA_SET_PARAM_CLIP_FROM },
 	{ vod_string("clipTo"),							VOD_JSON_INT,	MEDIA_SET_PARAM_CLIP_TO },
 	{ vod_string("cache"),							VOD_JSON_BOOL,	MEDIA_SET_PARAM_CACHE },
-  { vod_string("closedCaptions"), 				VOD_JSON_ARRAY, MEDIA_SET_PARAM_CLOSED_CAPTIONS},
+	{ vod_string("closedCaptions"), 				VOD_JSON_ARRAY, MEDIA_SET_PARAM_CLOSED_CAPTIONS},
 	{ vod_null_string, 0, 0 }
 };
 
@@ -810,13 +810,13 @@ media_set_parse_closed_captions(
 {
 	media_closed_captions_t* cur_output;
 	vod_json_value_t* params[MEDIA_CLOSED_CAPTIONS_PARAM_COUNT];
-  vod_array_part_t* part;
-  vod_json_object_t* cur_pos;
+	vod_array_part_t* part;
+	vod_json_object_t* cur_pos;
 	vod_status_t rc;
 	vod_str_t* id;
 	vod_str_t* label;
 
-	if (array->type != VOD_JSON_OBJECT && array->count > 1)
+	if (array->type != VOD_JSON_OBJECT && array->count > 0)
 	{
 		vod_log_error(VOD_LOG_ERR, request_context->log, 0,
 			"media_set_parse_closed_captions: invalid closed caption type %d expected object", array->type);
@@ -825,10 +825,9 @@ media_set_parse_closed_captions(
 	if (array->count > MAX_CLOSED_CAPTIONS)
 	{
 		vod_log_error(VOD_LOG_ERR, request_context->log, 0,
-		"media_set_parse_closed_captions: invalid number of elements in the closed captions array %uz", array->count);
+			"media_set_parse_closed_captions: invalid number of elements in the closed captions array %uz", array->count);
 		return VOD_BAD_MAPPING;
 	}
-	media_set->closed_captions_count = array->count;
 
 	cur_output = vod_alloc(request_context->pool, sizeof(cur_output[0]) * array->count);
 	if (cur_output == NULL)
@@ -879,9 +878,9 @@ media_set_parse_closed_captions(
 
 		rc = media_set_parse_language(request_context, params[MEDIA_CLOSED_CAPTIONS_PARAM_LANGUAGE], &cur_output->language);
 		if (rc != VOD_OK)
-    {
-      return rc;
-    }
+		{
+		  return rc;
+		}
 
 		id = &params[MEDIA_CLOSED_CAPTIONS_PARAM_ID]->v.str;
 		cur_output->id.data = vod_alloc(request_context->pool, id->len + 1);
@@ -2442,21 +2441,17 @@ media_set_parse_json(
 	}
 
 	 if (params[MEDIA_SET_PARAM_CLOSED_CAPTIONS] != NULL)
-  {
-    result->has_closed_captions = TRUE;
-    rc = media_set_parse_closed_captions(
-        request_context,
-        result,
-        &params[MEDIA_SET_PARAM_CLOSED_CAPTIONS]->v.arr);
-    if (rc != VOD_OK)
-    {
-      return rc;
-    }
-  }
-  else
-  {
-    result->has_closed_captions = FALSE;
-  }
+	{
+		result->has_closed_captions = TRUE;
+	  rc = media_set_parse_closed_captions(
+	      request_context,
+	      result,
+	      &params[MEDIA_SET_PARAM_CLOSED_CAPTIONS]->v.arr);
+	  if (rc != VOD_OK)
+	  {
+	    return rc;
+	  }
+	}
 
 	if (params[MEDIA_SET_PARAM_DURATIONS] == NULL)
 	{

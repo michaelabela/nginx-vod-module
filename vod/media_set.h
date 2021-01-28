@@ -105,13 +105,9 @@ typedef struct media_notification_s {
 } media_notification_t;
 
 typedef struct media_closed_captions_s {
-	// char* id[3];
-	// size_t id_len;
 	vod_str_t id;
 	language_id_t language;
 	vod_str_t label;
-	// char* label[7];
-	// size_t label_len;
 } media_closed_captions_t;
 
 typedef struct {
@@ -159,7 +155,6 @@ typedef struct {
 
 	media_closed_captions_t* closed_captions;
 	media_closed_captions_t* closed_captions_end;
-	uint32_t closed_captions_count;
 	bool_t has_closed_captions;
 
 	// initialized while applying filters

@@ -645,8 +645,10 @@ Mandatory fields:
 Mandatory fields:
 * `id` - a string that identifies the embedded captions. This will become the `INSTREAM-ID` field and must
 have one of the following values: `CC1`, `CC3`, `CC3`, `CC4`, or `SERVICEn`, where `n` is between 1 and 63.
-* `language` - a 3-letter (ISO-639-2) language code that indicates the language of the closed caption track.
 * `label` - a friendly string that indicates the language of the closed caption track.
+
+Optional fields:
+* `language` - a 3-letter (ISO-639-2) language code that indicates the language of the closed caption track.
 
 
 ### Security
