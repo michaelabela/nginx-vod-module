@@ -30,7 +30,7 @@
 
 #define M3U8_STREAM_TAG_AUDIO ",AUDIO=\"" M3U8_EXT_MEDIA_GROUP_ID_AUDIO "%uD\""
 #define M3U8_STREAM_TAG_SUBTITLES ",SUBTITLES=\"" M3U8_EXT_MEDIA_GROUP_ID_SUBTITLES "%uD\""
-#define M3U8_STREAM_TAG_CLOSED_CAPTIONS ",CLOSED-CAPTIONS=\"cc\""
+#define M3U8_STREAM_TAG_CLOSED_CAPTIONS ",CLOSED-CAPTIONS=\"" M3U8_EXT_MEDIA_GROUP_ID_CLOSED_CAPTIONS "%uD\""
 #define M3U8_STREAM_TAG_NO_CLOSED_CAPTIONS ",CLOSED-CAPTIONS=NONE"
 
 #define M3U8_VIDEO_RANGE_SDR ",VIDEO-RANGE=SDR"
@@ -855,7 +855,7 @@ m3u8_builder_closed_captions_write(
 			M3U8_EXT_MEDIA_TYPE_CLOSED_CAPTIONS,
 			M3U8_EXT_MEDIA_GROUP_ID_CLOSED_CAPTIONS,
 			index,
-			&closed_captions->label.data);
+			(vod_str_t*) &closed_captions->label);
 		
 		p = vod_sprintf(p, M3U8_EXT_MEDIA_LANG,
 				lang_get_rfc_5646_name(closed_captions->language));
@@ -1165,7 +1165,7 @@ m3u8_builder_write_variants(
 		}
 		if (media_set->closed_captions < media_set->closed_captions_end)
 		{
-			p = vod_copy(p, M3U8_STREAM_TAG_CLOSED_CAPTIONS, sizeof(M3U8_STREAM_TAG_CLOSED_CAPTIONS) - 1);
+			p = vod_sprintf(p, M3U8_STREAM_TAG_CLOSED_CAPTIONS, 0);
 		} 
 		else if (media_set->has_closed_captions)
 		{

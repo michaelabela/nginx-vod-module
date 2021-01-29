@@ -813,8 +813,8 @@ media_set_parse_closed_captions(
 	vod_array_part_t* part;
 	vod_json_object_t* cur_pos;
 	vod_status_t rc;
-	vod_str_t* id;
-	vod_str_t* label;
+	// vod_str_t* id;
+	// vod_str_t* label;
 
 	if (array->type != VOD_JSON_OBJECT && array->count > 0)
 	{
@@ -882,31 +882,43 @@ media_set_parse_closed_captions(
 		  return rc;
 		}
 
-		id = &params[MEDIA_CLOSED_CAPTIONS_PARAM_ID]->v.str;
-		cur_output->id.data = vod_alloc(request_context->pool, id->len + 1);
-		if (cur_output->id.data == NULL)
+		rc = media_set_parse_null_term_string(&request_context, params[MEDIA_CLOSED_CAPTIONS_PARAM_ID], &cur_output->id);
+		if (rc != VOD_OK)
 		{
-			vod_log_debug0(VOD_LOG_DEBUG_LEVEL, request_context->log, 0,
-			"media_set_parse_closed_captions: vod_alloc failed");
-			return VOD_ALLOC_FAILED;
+		  return rc;
 		}
 
-		vod_memcpy(cur_output->id.data, id->data, id->len);
-		cur_output->id.data[id->len] = '\0';
-		cur_output->id.len = id->len;
-
-		label = &params[MEDIA_CLOSED_CAPTIONS_PARAM_LABEL]->v.str;
-		cur_output->label.data = vod_alloc(request_context->pool, label->len + 1);
-		if (cur_output->label.data == NULL)
+		rc = media_set_parse_null_term_string(&request_context, params[MEDIA_CLOSED_CAPTIONS_PARAM_LABEL], &cur_output->label);
+		if (rc != VOD_OK)
 		{
-			vod_log_debug0(VOD_LOG_DEBUG_LEVEL, request_context->log, 0,
-			"media_set_parse_closed_captions: vod_alloc failed");
-			return VOD_ALLOC_FAILED;
+		  return rc;
 		}
 
-		vod_memcpy(cur_output->label.data, label->data, label->len);
-		cur_output->label.data[label->len] = '\0';
-		cur_output->label.len = label->len;
+		// id = &params[MEDIA_CLOSED_CAPTIONS_PARAM_ID]->v.str;
+		// cur_output->id.data = vod_alloc(request_context->pool, id->len + 1);
+		// if (cur_output->id.data == NULL)
+		// {
+		// 	vod_log_debug0(VOD_LOG_DEBUG_LEVEL, request_context->log, 0,
+		// 	"media_set_parse_closed_captions: vod_alloc failed");
+		// 	return VOD_ALLOC_FAILED;
+		// }
+
+		// vod_memcpy(cur_output->id.data, id->data, id->len);
+		// cur_output->id.data[id->len] = '\0';
+		// cur_output->id.len = id->len;
+
+		// label = &params[MEDIA_CLOSED_CAPTIONS_PARAM_LABEL]->v.str;
+		// cur_output->label.data = vod_alloc(request_context->pool, label->len + 1);
+		// if (cur_output->label.data == NULL)
+		// {
+		// 	vod_log_debug0(VOD_LOG_DEBUG_LEVEL, request_context->log, 0,
+		// 	"media_set_parse_closed_captions: vod_alloc failed");
+		// 	return VOD_ALLOC_FAILED;
+		// }
+
+		// vod_memcpy(cur_output->label.data, label->data, label->len);
+		// cur_output->label.data[label->len] = '\0';
+		// cur_output->label.len = label->len;
 
 		cur_output++;
 	}
