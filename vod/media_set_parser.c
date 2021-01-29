@@ -813,8 +813,6 @@ media_set_parse_closed_captions(
 	vod_array_part_t* part;
 	vod_json_object_t* cur_pos;
 	vod_status_t rc;
-	// vod_str_t* id;
-	// vod_str_t* label;
 
 	if (array->type != VOD_JSON_OBJECT && array->count > 0)
 	{
@@ -893,33 +891,7 @@ media_set_parse_closed_captions(
 		{
 		  return rc;
 		}
-
-		// id = &params[MEDIA_CLOSED_CAPTIONS_PARAM_ID]->v.str;
-		// cur_output->id.data = vod_alloc(request_context->pool, id->len + 1);
-		// if (cur_output->id.data == NULL)
-		// {
-		// 	vod_log_debug0(VOD_LOG_DEBUG_LEVEL, request_context->log, 0,
-		// 	"media_set_parse_closed_captions: vod_alloc failed");
-		// 	return VOD_ALLOC_FAILED;
-		// }
-
-		// vod_memcpy(cur_output->id.data, id->data, id->len);
-		// cur_output->id.data[id->len] = '\0';
-		// cur_output->id.len = id->len;
-
-		// label = &params[MEDIA_CLOSED_CAPTIONS_PARAM_LABEL]->v.str;
-		// cur_output->label.data = vod_alloc(request_context->pool, label->len + 1);
-		// if (cur_output->label.data == NULL)
-		// {
-		// 	vod_log_debug0(VOD_LOG_DEBUG_LEVEL, request_context->log, 0,
-		// 	"media_set_parse_closed_captions: vod_alloc failed");
-		// 	return VOD_ALLOC_FAILED;
-		// }
-
-		// vod_memcpy(cur_output->label.data, label->data, label->len);
-		// cur_output->label.data[label->len] = '\0';
-		// cur_output->label.len = label->len;
-
+		
 		cur_output++;
 	}
 
@@ -2452,17 +2424,17 @@ media_set_parse_json(
 		result->cache_mapping = TRUE;
 	}
 
-	 if (params[MEDIA_SET_PARAM_CLOSED_CAPTIONS] != NULL)
+	if (params[MEDIA_SET_PARAM_CLOSED_CAPTIONS] != NULL)
 	{
 		result->has_closed_captions = TRUE;
-	  rc = media_set_parse_closed_captions(
-	      request_context,
-	      result,
-	      &params[MEDIA_SET_PARAM_CLOSED_CAPTIONS]->v.arr);
-	  if (rc != VOD_OK)
-	  {
-	    return rc;
-	  }
+		rc = media_set_parse_closed_captions(
+			request_context,
+			result,
+			&params[MEDIA_SET_PARAM_CLOSED_CAPTIONS]->v.arr);
+		if (rc != VOD_OK)
+		{
+			return rc;
+		}
 	}
 
 	if (params[MEDIA_SET_PARAM_DURATIONS] == NULL)
